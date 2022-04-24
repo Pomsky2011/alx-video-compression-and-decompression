@@ -1,8 +1,8 @@
-#include"delta.h"
+#include"delta-encode.h"
 
 
 char *delta_encode(char *data, int data_len){
-	char *result = malloc(sizeof(char) * data_len);
+	char *encoded_result = malloc(sizeof(char) * data_len);
 	char prev_byte_last_bit = 0;
 
 	for(int i = 0; i < data_len; i++){
@@ -47,9 +47,9 @@ char *delta_encode(char *data, int data_len){
 			delta_byte = delta_byte | 1;
 		}
 
-		prev_byte_last_bit = delta_byte & 1;
-		result[i] = delta_byte;
+		prev_byte_last_bit = (current_byte & 1) << 7;
+		encoded_result[i] = delta_byte;
 	}
 	
-	return result;
+	return encoded_result;
 }
