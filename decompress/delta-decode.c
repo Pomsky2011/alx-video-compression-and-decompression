@@ -1,6 +1,5 @@
 #include "delta-decode.h"
 
-// TODO: This does not decode properly. Fix it!
 char *delta_decode(char *encoded_data, int encoded_data_len){
     char *decoded_result = malloc(sizeof(char) * encoded_data_len);
     char prev_byte_last_bit = 0;
@@ -17,57 +16,29 @@ char *delta_decode(char *encoded_data, int encoded_data_len){
 		char seventh_bit = current_byte & 2;
 		char eighth_bit  = current_byte & 1;
 
-        char decoded_byte = 0;
+		char first_decoded_bit;
 
-        if(i == 0){
-			decoded_byte = decoded_byte | first_bit;
-        }else if(first_bit != 0){
-            decoded_byte = decoded_byte | (~prev_byte_last_bit) & 128;
-        }else{
-            decoded_byte = decoded_byte | prev_byte_last_bit;
-        }
+		if(i == 0){
+			first_decoded_bit = first_bit;
+		}else{
+			first_decoded_bit = prev_byte_last_bit ^ first_bit;
+		}
 
-        if(second_bit != 0){
-            decoded_byte = decoded_byte | (~decoded_byte & 128);
-        }else{
-            decoded_byte = decoded_byte | (decoded_byte & 128);
-        }
+		char second_decoded_bit  = (first_decoded_bit >> 1) ^ second_bit;
+		char third_decoded_bit   = (second_decoded_bit >> 1) ^ third_bit;
+		char fourth_decoded_bit  = (third_decoded_bit >> 1) ^ fourth_bit;
+		char fifth_decoded_bit   = (fourth_decoded_bit >> 1) ^ fifth_bit;
+		char sixth_decoded_bit   = (fifth_decoded_bit >> 1) ^ sixth_bit;
+		char seventh_decoded_bit = (sixth_decoded_bit >> 1) ^ seventh_bit;
+		char eighth_decoded_bit  = (seventh_decoded_bit >> 1) ^ eighth_bit;
 
-        if(third_bit != 0){
-            decoded_byte = decoded_byte | (~decoded_byte & 64);
-        }else{
-            decoded_byte = decoded_byte | (decoded_byte & 64);
-        }
-
-        if(fourth_bit != 0){
-            decoded_byte = decoded_byte | (~decoded_byte & 32);
-        }else{
-            decoded_byte = decoded_byte | (decoded_byte & 32);
-        }
-
-        if(fifth_bit != 0){
-            decoded_byte = decoded_byte | (~decoded_byte & 16);
-        }else{
-            decoded_byte = decoded_byte | (decoded_byte & 16);
-        }
-
-        if(sixth_bit != 0){
-            decoded_byte = decoded_byte | (~decoded_byte & 8);
-        }else{
-            decoded_byte = decoded_byte | (decoded_byte & 8);
-        }
-
-        if(seventh_bit != 0){
-            decoded_byte = decoded_byte | (~decoded_byte & 4);
-        }else{
-            decoded_byte = decoded_byte | (decoded_byte & 4);
-        }
-
-        if(eighth_bit != 0){
-            decoded_byte = decoded_byte | (~decoded_byte & 2);
-        }else{
-            decoded_byte = decoded_byte | (decoded_byte & 2);
-        }
+		char decoded_byte = second_decoded_bit |
+			third_decoded_bit |
+			fourth_decoded_bit |
+			fifth_decoded_bit |
+			sixth_decoded_bit |
+			seventh_decoded_bit |
+			eighth_decoded_bit;
 
         prev_byte_last_bit = (decoded_byte & 1) << 7;
 		decoded_result[i] = decoded_byte;
