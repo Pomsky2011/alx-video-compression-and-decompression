@@ -14,3 +14,11 @@ Run `make` in the root directory.
 ## Testing
 
 Run `make test` in the root directory.
+
+## Known bugs
+
+Incompatible with clang
+
+## Patched bugs
+
+Delta Decoding is broken
