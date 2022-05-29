@@ -1,4 +1,4 @@
-#include "lzss_encode.h"
+#include "lzss-encode.h"
 
 int num_digits (int n) {
     int r = 1;
@@ -21,7 +21,7 @@ char* lzss_encode(
     int look_ahead_buffer_size
 ){
     char *encoded_data = malloc(data_len);
-    int encoded_data_offset;
+    int encoded_data_offset = 0;
 
     for(int i = 0; i < data_len; i++) {
         int search_buffer_start = 0;
