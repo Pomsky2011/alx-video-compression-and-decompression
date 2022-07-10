@@ -11,7 +11,7 @@ int num_digits (int n) {
 }
 
 int encoded_length(int lookback_offset, int length){
-    return num_digits(lookback_offset) + num_digits(length) + 3;
+    return num_digits(lookback_offset) + num_digits(length) + 4;
 }
 
 char* lzss_encode(
@@ -68,7 +68,7 @@ char* lzss_encode(
             }
         }
         
-        int match_length = prev_match[0] - prev_match[1];
+        int match_length = prev_match[1] - prev_match[0];
 
         if(match_length > 0){
             int loopback_offset = i - match_start;
@@ -86,7 +86,7 @@ char* lzss_encode(
             memcpy(
                 encoded_data + encoded_data_offset,
                 encoded_chunk,
-                chunk_length
+                chunk_length - 1
             );
 
             encoded_data_offset += match_length;

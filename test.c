@@ -57,6 +57,6 @@ I DON'T LIKE THEM, SAM I AM.";
 }
 
 int main(){
-    test_delta();
+    //test_delta();
     test_lzss();
 }
