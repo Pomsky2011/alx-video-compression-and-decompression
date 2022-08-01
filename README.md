@@ -18,6 +18,7 @@ Run `make test` in the root directory.
 ## Known bugs
 
 Incompatible with clang
+
 LZSS is broken
 
 ## Patched bugs
